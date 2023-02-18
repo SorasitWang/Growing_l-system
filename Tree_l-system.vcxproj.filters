@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\lSystem">
+      <UniqueIdentifier>{a91f768f-f060-49c6-bc74-f9efa2a99c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\object">
+      <UniqueIdentifier>{76e29f45-029a-42d0-b686-a1c7a0ffb42d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree">
+      <UniqueIdentifier>{82ec0c80-2181-4b1c-a83c-7f0a48234348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\buld">
+      <UniqueIdentifier>{bed01699-aaea-402f-aaf0-e520e75fd935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\limb">
+      <UniqueIdentifier>{f5329fc5-3689-4acc-a041-ca874662ec1a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="header\lSystem.cpp">
+      <Filter>Header Files\lSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="header\object.cpp">
+      <Filter>Header Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.cpp">
+      <Filter>Header Files\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="util.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\lSystem.h">
+      <Filter>Header Files\lSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="header\object.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="header\tree.h">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="header\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\buld.h">
+      <Filter>Header Files\buld</Filter>
+    </ClInclude>
+    <ClInclude Include="header\limb.h">
+      <Filter>Header Files\limb</Filter>
+    </ClInclude>
+    <ClInclude Include="header\baseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="line.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="line.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="line.gs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="model_instance.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="model_instance.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="model.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="model.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="text.vs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="text.fs">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
