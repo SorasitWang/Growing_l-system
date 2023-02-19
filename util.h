@@ -37,7 +37,7 @@ public:
         cout << "=>" <<printVec3(originVec) << " " << printVec3(destVec) << " " << printVec3(crossVec) << endl;
         float normCross = crossVec.length();
         glm::vec3 axis = glm::normalize(crossVec);
-        float angle = glm::degrees(glm::asin(glm::clamp(normCross, -1.0f, 1.0f)));
+        float angle = glm::degrees(glm::asin(normCross));
        /* if (destVec.z < 0) {
             angle += 180.0f;
             axis *= -1;

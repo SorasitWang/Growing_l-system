@@ -28,6 +28,9 @@
     <Filter Include="Header Files\limb">
       <UniqueIdentifier>{f5329fc5-3689-4acc-a041-ca874662ec1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\newLSystem">
+      <UniqueIdentifier>{259d2c83-64d6-4b87-815e-65feea44df21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -81,6 +84,12 @@
       <Filter>Header Files\limb</Filter>
     </ClInclude>
     <ClInclude Include="header\baseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\newLSystem.h">
+      <Filter>Header Files\newLSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="header\baseLSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

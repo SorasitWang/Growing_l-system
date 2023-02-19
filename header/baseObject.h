@@ -108,7 +108,7 @@ public:
 				this->startPos = this->prev->endPos;
 			}
 			//cout << Util::printVec3(this->startPos) << endl;
-			this->endPos = this->startPos + this->direction*scale;
+			this->endPos = this->startPos + glm::vec3(glm::scale(this->dirMatrix, glm::vec3(scale)) * glm::vec4(0, 1, 0 ,1.0));
 			glm::vec3 center = (this->startPos + this->endPos) / 2.0f;
 			//pair<glm::vec3, float> rotateParams = this->findRotationParam(this->direction);
 			
@@ -181,13 +181,13 @@ public:
 		allPos.push_back(this->endPos.z);
 
 		if (this->type == "bark") {
-			allPos.push_back(0.75f + this->normRand /4);
+			allPos.push_back(0.9f + this->normRand /5);
 			allPos.push_back(0.0f);
 			allPos.push_back(0.0f);
 		}
 		else   if (this->type == "topBark") {
 			allPos.push_back(0.0f);
-			allPos.push_back(0.75f + this->normRand /4);
+			allPos.push_back(0.9f + this->normRand /5);
 			allPos.push_back(0.0f);
 		}
 		glm::mat4 mat(1.0f);
@@ -195,8 +195,7 @@ public:
 
 		mat = glm::translate(mat, (this->startPos + this->endPos) / 2.0f);
 		mat *= this->dirMatrix ;
-		mat = glm::scale(mat, glm::vec3(1, scale , 1));
-		mat = glm::scale(mat, glm::vec3(0.1f, 1.0f, 0.1f));
+		mat = glm::scale(mat, glm::vec3(0.1f, scale, 0.1f));
 		allMatrix.push_back(mat);
 	}
 
@@ -289,6 +288,64 @@ public:
 			direction.x << " " << direction.y << " " << direction.z << " " << endl;*/
 		return direction;
 	}
+
+	static vector<string> extract(string state) {
+		/*
+		input : "1(g)F/[+(2B)]-(2B)"
+		output : [g, 2B, 2B]
+
+		Beware!inside() must be 1 number(optional) + 1 character only
+		*/
+		int start = 0;
+		vector<string> re;
+		while (state.find("(", start) != string::npos) {
+			start = state.find("(", start);
+			int end = state.find(")", start);
+			start += 1;
+			re.push_back(state.substr(start, end - start));
+
+			//print(start, end, state[start + 1:end])
+		}
+		return re;
+
+	}
+
+	static BaseObject* genLSystem(string txt,float alpha_,float delta,map<char,string> colors,map<string,string> rules) {
+		/*
+			text : (1X)
+			colors : { 'a' : "b"}
+			rules : {
+						"1X" : "..+(a)F[[++(1X)F]++(a)F]"},
+						"a","a"
+		*/
+		/*vector<string> dirTextStack;
+		BaseObject* curParent = nullptr;
+		BaseObject* curPrev = nullptr;
+		for (char x : txt) {
+			if (x == )
+		}*/
+		
+	}
+
+	//static void recurGenLSystem(BaseObject* parent,string txt,int it,map<string,string> rules,map<char,string> colors) {
+	//	vector<string> ex = BaseObject::extract(txt);
+	//	BaseObject* currentParent = parent;
+	//	BaseObject* currentPrev = nullptr;
+	//	unsigned int idx = 0,i=0;
+	//	while (i<txt.size()){
+	//		char x = txt[i];
+	//		if (x == '(') {
+	//			auto newState = rules.find(ex[idx]);
+	//			if (newState != rules.end()) {
+	//				recurGenLSystem(currentParent, newState->second, --it, rules, colors);
+	//			}
+	//			i += ex[idx++].size() + 2;
+	//		}
+	//		else {
+	//			if (x !=)
+	//		}
+	//	}
+	//}
 private:
 };
 #endif

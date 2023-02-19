@@ -14,6 +14,7 @@ class Tree
 {
 public :
     LSystem lSystem;
+
     Tree() {};
     Tree(string type, unsigned int step,float alpha=17.5f,float delta=8.0f,glm::vec3 initDirection= glm::vec3(.0f, 1.0f, .0f)) {
         this->step = step;

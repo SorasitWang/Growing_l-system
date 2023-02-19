@@ -12,7 +12,7 @@ uniform vec3 viewPos;
 void main()
 {
 
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.3;
     float specularStrength = 0.1f;
     vec3 objectColor = vec3(color[0][0],color[0][1],color[0][2]);
 

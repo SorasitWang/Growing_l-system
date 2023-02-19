@@ -165,6 +165,8 @@ vector<Limb*> LSystem::genPos( float alpha_, float delta, glm::vec3 initDirectio
 }
 
 
+
+
 /*
 Buld LSystem::genHierachy(int step,string state) {
     float alpha_,alpha, delta;
@@ -329,84 +331,99 @@ void LSystem::recurGenHierachy(BaseObject* parent, int it) {
     
     BaseObject* limb11 = new BaseObject(parent, nullptr, "..+", "bark", 15, 1);
     parent->childLimb.push_back(limb11);
-    BaseObject* limb12 = new  BaseObject(parent, limb11, "++", "topBark", 10, 1);
+
+    BaseObject* limb12 = new  BaseObject(parent, limb11, "++", "topBark", 15, 1);
     parent->childLimb.push_back(limb12);
-   /* BaseObject* limb13 = new  BaseObject(parent, limb11, "--", "topBark", 15, 1);
-    parent->childLimb.push_back(limb13);*/
     BaseObject* buld1 = new  BaseObject(parent, limb11, "++", 15, 1);
     parent->childBuld.push_back(buld1);
     recurGenHierachy(buld1, it);
-
-   /* BaseObject* limb21 = new BaseObject(parent, nullptr, "..+", "bark", 15, 1);
-    parent->childLimb.push_back(limb21);*/
+    return;
     BaseObject* limb22 = new  BaseObject(parent, limb11, "--", "topBark", 12.5, 1);
     parent->childLimb.push_back(limb22);
-   /* BaseObject* limb23 = new  BaseObject(parent, limb21, "++", "topBark", 15, 1);
-    parent->childLimb.push_back(limb23);*/
     BaseObject* buld2 = new  BaseObject(parent, limb11, "--", 15, 1);
     parent->childBuld.push_back(buld2);
     recurGenHierachy(buld2, it);
 
-  /*  BaseObject* limb31 = new BaseObject(parent, nullptr, "..+", "bark", 15, 1);
-    parent->childLimb.push_back(limb31);*/
     BaseObject* limb32 = new  BaseObject(parent, limb11, ".<", "topBark", 15, 1);
     parent->childLimb.push_back(limb32);
-    //BaseObject* limb33 = new  BaseObject(parent, limb31, ".>", "topBark", 15, 1);
-    //parent->childLimb.push_back(limb33);
     BaseObject* buld3 = new  BaseObject(parent, limb11, ".<", 15, 1);
     parent->childBuld.push_back(buld3);
     recurGenHierachy(buld3, it);
 
-    /*BaseObject* limb41 = new BaseObject(parent, nullptr, "..+", "bark", 15, 1);
-    parent->childLimb.push_back(limb41);*/
     BaseObject* limb42 = new  BaseObject(parent, limb11, ".>", "topBark", 18, 1);
     parent->childLimb.push_back(limb42);
-    //BaseObject* limb43 = new  BaseObject(parent, limb41, ".<", "topBark", 15, 1);
-    //parent->childLimb.push_back(limb43);
     BaseObject* buld4 = new  BaseObject(parent, limb11, ".>", 15, 1);
     parent->childBuld.push_back(buld4);
     recurGenHierachy(buld4, it);
 }
-/*
-void LSystem::recurGenHierachy(BaseObject* parent,int it) {
-    //cout << it << endl;
+
+
+
+BaseObject* LSystem::genHierachy2() {
+    map<string, string> rules = {
+        {"X", "..+aF[[++XF]++bF][[--XF]--bF][[.>XF].>bF][[.<XF].<bF]"},
+            {"b","a"}
+    };
+    map<string, string> types = {
+        {"a" ,"bark" },
+        {"b","topBark"}
+    };
+    BaseObject* parent = new BaseObject(nullptr, nullptr, "", 15, 1);
+
+    this->recurGenHierachy2(parent,this->axiom,7,15,1, types,rules);
+    return parent;
+}
+
+
+void LSystem::recurGenHierachy2(BaseObject* parent,string txt,int it,float alpha,float delta, map<string, string> types, map<string, string> rules) {
     if (it < 0)return;
     it -= 1;
-    cout << Util::printVec3(parent->direction) << endl;
-    BaseObject* limb11 = new BaseObject(parent, nullptr, "++", "bark", 15, 2);
-    parent->childLimb.push_back(limb11);
-    BaseObject* limb12 = new  BaseObject(parent, limb11, "++", "topBark", 15, 1);
-    parent->childLimb.push_back(limb12);
-    BaseObject* buld1 = new  BaseObject(parent, limb11,"..+", 15, 1);
-    parent->childBuld.push_back(buld1);
-    this->recurGenHierachy(buld1,it);
+    string dirStack = "";
+    vector<BaseObject*> prevStack;
+    prevStack.push_back(nullptr);
+    int bracketStack = 0;
+    auto tmp = rules.find("X");
+   /* if (tmp != rules.end())
+        cout << tmp->second << endl;*/
+    for (char x_ : txt) {
+       
+        string x = std::string() + x_;
+        if (x_ == 'F') {
 
-    BaseObject* limb21 = new BaseObject(parent, nullptr, "--", "bark", 15, 2);
-    parent->childLimb.push_back(limb21);
-    BaseObject* limb22 = new  BaseObject(parent, limb21, "--", "topBark", 15, 1);
-    parent->childLimb.push_back(limb22);
-    BaseObject* buld2 = new  BaseObject(parent, limb21, "..+", 15, 1);
-    parent->childBuld.push_back(buld2);
-    this->recurGenHierachy(buld2, it);
+        }
+        else if (types.find(x) != types.end()) {
 
-    BaseObject* limb31 = new BaseObject(parent, nullptr, "&&", "bark", 15, 2);
-    parent->childLimb.push_back(limb31);
-    BaseObject* limb32 = new  BaseObject(parent, limb31, "&&", "topBark", 15, 1);
-    parent->childLimb.push_back(limb32);
-    BaseObject* buld3 = new  BaseObject(parent, limb31, "..+", 15, 1);
-    parent->childBuld.push_back(buld3);
-    this->recurGenHierachy(buld3, it);
-
-    BaseObject* limb41 = new BaseObject(parent, nullptr, "^^", "bark", 15, 2);
-    parent->childLimb.push_back(limb41);
-    BaseObject* limb42 = new  BaseObject(parent, limb41, "^^", "topBark", 15, 1);
-    parent->childLimb.push_back(limb42);
-    BaseObject* buld4 = new  BaseObject(parent, limb41, "..+", 15, 1);
-    parent->childBuld.push_back(buld4);
-    this->recurGenHierachy(buld4, it);
-
-
-
+            BaseObject* newLimb = new BaseObject(parent, prevStack.back(), dirStack,types.find(x)->second, alpha, delta);
+            parent->childLimb.push_back(newLimb);
+            if (prevStack.size() <= bracketStack)
+                prevStack.push_back(newLimb);
+            else {
+                prevStack.pop_back();
+                prevStack.push_back(newLimb);
+            }
+            dirStack = "";
+        }
+        else if (rules.find(x) != rules.end()) {
+        //else if (rules.find(x) != rules.end()) {
+            BaseObject* newBuld = new BaseObject(parent, prevStack.back(), dirStack, alpha, delta);
+            parent->childBuld.push_back(newBuld);
+            recurGenHierachy2(newBuld, rules.find(x)->second, it, alpha, delta, types, rules);
+            dirStack = "";
+        }
+        else if (x_ == '[') {
+            bracketStack += 1;
+        }
+        else if (x_ == ']') {
+            if (prevStack.size() > bracketStack) {
+                prevStack.pop_back();
+            }
+            bracketStack -= 1;
+        }
+        else {
+            dirStack = dirStack + x_;
+         
+        }
+    }
+    //cout << it << endl;
 
 }
-*/

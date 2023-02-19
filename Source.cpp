@@ -105,59 +105,13 @@ int main() {
     Shader shader("line.vs", "line.fs", "line.gs");
     instanceShader = new Shader("model_instance.vs", "model_instance.fs");
     modelShader = new Shader("model.vs", "model.fs");
-   
+    model = new Model("./res/cylinder_8v.obj");
 	
 	//tree.runAll();
 	//cout << tree.lSystem.state << endl;
 	//allObj = tree.draw();
-   
-    model = new Model("./res/cylinder_8v.obj");
-    for (unsigned int i = 0; i < allObj.size();i++) {
-
-        Limb* obj = allObj[i];
-        cout << obj->level << endl;
-        if (obj->level > step)
-            continue;
-        allPos.push_back(obj->startPos.x * scale);
-        allPos.push_back(obj->startPos.y * scale);
-        allPos.push_back(obj->startPos.z * scale);
-
-        allPos.push_back(obj->endPos.x * scale);
-        allPos.push_back(obj->endPos.y * scale);
-        allPos.push_back(obj->endPos.z * scale);
-
-        if (obj->type == "bark") {
-            allPos.push_back(1.0f);
-            allPos.push_back(0.0f);
-            allPos.push_back(0.0f);
-        }
-        else if (obj->type == "leaf") {
-            allPos.push_back(0.0f);
-            allPos.push_back(1.0f);
-            allPos.push_back(0.0f);
-        }
-        else if (obj->type == "topLeaf") {
-            allPos.push_back(0.0f);
-            allPos.push_back(0.5f);
-            allPos.push_back(0.0f);
-        }
-        else if (obj->type == "topBark") {
-            allPos.push_back(0.5f);
-            allPos.push_back(0.0f);
-            allPos.push_back(0.0f);
-        }
-		cout << obj->type << " " << Util::printVec3(obj->startPos * scale) << " -> " << Util::printVec3(obj->endPos * scale) << endl;
-	}
-
-   
-
-
-    float points[] = {
-       -0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
-    };
     
-    parent = tree.lSystem.genHierachy1(6);
+    
 
     instanceShader->use();
     instanceShader->setVec3("lightPos",glm::vec3(0.0f) );
@@ -262,6 +216,8 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    //parent = tree.lSystem.genHierachy1(4);
+    parent = tree.lSystem.genHierachy2();
     //return 0;
     while (!glfwWindowShouldClose(window))
     {
@@ -278,20 +234,13 @@ int main() {
         instanceShader->setMat4("view", view);
         instanceShader->setVec3("viewPos", camera.Position );
 
-       /* modelShader->use();
-        modelShader->setMat4("projection", projection);
-        modelShader->setMat4("view", view);*/
-
-        //model->Draw(*modelShader);
-       step += deltaTime/2.0f;
+        step += deltaTime;
         allPos.clear();
         genPos2(allPos);
-        // input
-        // -----
+
         processInput(window); 
         textShader.use();
         renderText(textShader, "#line " + std::to_string(allPos.size()/9), 15.0f, 15.0f, 0.4f, glm::vec3(1, 1, 1));
-        //renderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(1, 1, 1));
 
         shader.use();
         shader.setMat4("view", view);
@@ -448,7 +397,7 @@ void genPos2(vector<float>& allPos) {
         cout << allPos[i] << " " << allPos[i + 1] << " " << allPos[i + 2] << " , "
             << allPos[i+3] << " " << allPos[i + 4] << " " << allPos[i + 5] << endl;
     }*/
-    if (false) {
+    if (true) {
         int amount = allPos.size() / 9;
         vector<glm::mat4> modelMatrices;
         for (unsigned int pos = 0; pos < allPos.size(); pos += 9) {
@@ -460,29 +409,22 @@ void genPos2(vector<float>& allPos) {
             modelMatrices.push_back(m);
             //colorInstances.push_back(glm::vec3(, allPos[pos + 7], allPos[pos + 8]));
         }
-
+        //return;
         // configure instanced array
         // -------------------------
         unsigned int buffer;
         glGenBuffers(1, &buffer);
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
         glBufferData(GL_ARRAY_BUFFER, amount * (sizeof(glm::mat4)+sizeof(glm::mat4)), &(modelMatrices.data()[0]), GL_STATIC_DRAW);
-
-        /*unsigned int buffer1;
-        glGenBuffers(1, &buffer1);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer1);
-        glBufferData(GL_ARRAY_BUFFER, amount * (sizeof(glm::vec3)), &(colorInstances.data()[0]), GL_STATIC_DRAW);*/
-       /* unsigned int buffer;
-        glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &(modelMatrices.data()[0]), GL_STATIC_DRAW);*/
-
+        
         // set transformation matrices as an instance vertex attribute (with divisor 1)
         // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
         // normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
         // -----------------------------------------------------------------------------------------------------------------------------------
+       
         for (unsigned int i = 0; i < model->meshes.size(); i++)
         {
+           
             unsigned int VAO = model->meshes[i].VAO;
             glBindVertexArray(VAO);
             // set attribute pointers for matrix (4 times vec4)
@@ -517,7 +459,7 @@ void genPos2(vector<float>& allPos) {
             glBindVertexArray(0);
         }
 
-
+       
         instanceShader->use();
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
