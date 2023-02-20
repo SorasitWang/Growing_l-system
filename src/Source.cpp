@@ -8,14 +8,14 @@
 #include <iostream>
 #ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
-#include "./header/stb_image.h"
+#include "../header/stb_image.h"
 #endif
-#include "./header/tree.h"
-#include "./header/camera.h"
-#include "./header/shader.h"
-#include "./header/limb.h"
+#include "../header/tree/tree.h"
+#include "../header/camera.h"
+#include "../header/shader.h"
+#include "../header/object/limb.h"
 #include <map>
-#include "util.h"
+#include "../header/util.h"
 #include <time.h>
 
 #include <ft2build.h>
@@ -35,6 +35,7 @@ using namespace std;
 const unsigned int SCR_WIDTH = 450;
 const unsigned int SCR_HEIGHT = 800;
 const float zNear = 0.1f, zFar = 100.0f;
+const bool drawLine = false;
 float exposure = 1.0f;
 struct Character {
     unsigned int TextureID; // ID handle of the glyph texture
@@ -60,10 +61,11 @@ vector<float> currentPos;
 float scale = 1.0f;
 vector<Limb*> allObj;
 unsigned int VBO, VAO;
-int maxStep = 10;
+int maxStep = 7;
 Tree tree("C", maxStep,15.0f,1.0f);
 Shader* instanceShader;
 Shader* modelShader;
+Shader* lineShader;
 unsigned int tVAO, tVBO;
 int main() {
 
@@ -102,9 +104,9 @@ int main() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    Shader shader("line.vs", "line.fs", "line.gs");
-    instanceShader = new Shader("model_instance.vs", "model_instance.fs");
-    modelShader = new Shader("model.vs", "model.fs");
+    lineShader = new Shader("./src/shader/line.vs", "./src/shader/line.fs", "./src/shader/line.gs");
+    instanceShader = new Shader("./src/shader/model_instance.vs", "./src/shader/model_instance.fs");
+    modelShader = new Shader("./src/shader/model.vs", "./src/shader/model.fs");
     model = new Model("./res/cylinder_8v.obj");
 	
 	//tree.runAll();
@@ -119,7 +121,7 @@ int main() {
    
     // compile and setup the shader
 // ----------------------------
-    Shader textShader("text.vs", "text.fs");
+    Shader textShader("./src/shader/text.vs", "./src/shader/text.fs");
     glm::mat4 orthoProjection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
     textShader.use();
     textShader.setMat4("projection", orthoProjection);
@@ -217,7 +219,8 @@ int main() {
     glBindVertexArray(0);
 
     //parent = tree.lSystem.genHierachy1(4);
-    parent = tree.lSystem.genHierachy2();
+    //parent = tree.drawNew();
+    //parent = tree.draw();
     //return 0;
     while (!glfwWindowShouldClose(window))
     {
@@ -234,19 +237,19 @@ int main() {
         instanceShader->setMat4("view", view);
         instanceShader->setVec3("viewPos", camera.Position );
 
+        lineShader->use();
+        lineShader->setMat4("view", view);
+        lineShader->setMat4("projection", projection);
+
         step += deltaTime;
         allPos.clear();
         genPos2(allPos);
-
+        //genPos1(allPos);
         processInput(window); 
         textShader.use();
         renderText(textShader, "#line " + std::to_string(allPos.size()/9), 15.0f, 15.0f, 0.4f, glm::vec3(1, 1, 1));
 
-        shader.use();
-        shader.setMat4("view", view);
-        shader.setMat4("projection", projection);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_POINTS, 0, allPos.size()/9);
+      
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -275,11 +278,10 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 
         if (!spacePressed) {
-            step += 1;
-            allPos.clear();
+          
             spacePressed = true;
             //genPos1(allPos);
-            genPos2(allPos);
+            //genPos2(allPos);
         }
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
@@ -329,9 +331,8 @@ void genPos1(vector <float> &allPos ) {
     if (step > maxStep)
         return;
 
-
+    tree.runOneStep();
     allObj = tree.draw();
-    
     for (unsigned int i = 0; i < allObj.size(); i++) {
 
         Limb* obj = allObj[i];
@@ -346,9 +347,7 @@ void genPos1(vector <float> &allPos ) {
         allPos.push_back(obj->endPos.y * scale);
         allPos.push_back(obj->endPos.z * scale);
         glm::vec3 dir =  (obj->endPos - obj->startPos)* scale;
-        cout << obj->type << " " << dir.x << " " << dir.y << " " << dir.z << endl;
-        cout << " " << obj->startPos.x << " " << obj->startPos.y << " " << obj->startPos.z << endl;
-        cout << " " << obj->endPos.x << " " << obj->endPos.y << " " << obj->endPos.z << endl;
+      
             
         if (obj->type == "bark") {
             allPos.push_back(1.0f);
@@ -372,7 +371,8 @@ void genPos1(vector <float> &allPos ) {
         }
         //cout << obj->type << " " << Util::printVec3(obj->startPos * scale) << " -> " << Util::printVec3(obj->endPos * scale) << endl;
     }
-    tree.runOneStep();
+  
+    lineShader->use();
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -385,6 +385,9 @@ void genPos1(vector <float> &allPos ) {
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
     glBindVertexArray(0);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_POINTS, 0, allPos.size() / 9);
 }
 
 void genPos2(vector<float>& allPos) {
@@ -397,7 +400,7 @@ void genPos2(vector<float>& allPos) {
         cout << allPos[i] << " " << allPos[i + 1] << " " << allPos[i + 2] << " , "
             << allPos[i+3] << " " << allPos[i + 4] << " " << allPos[i + 5] << endl;
     }*/
-    if (true) {
+    if (!drawLine) {
         int amount = allPos.size() / 9;
         vector<glm::mat4> modelMatrices;
         for (unsigned int pos = 0; pos < allPos.size(); pos += 9) {
@@ -487,6 +490,12 @@ void genPos2(vector<float>& allPos) {
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
         glBindVertexArray(0);
+
+        lineShader->use();
+     
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_POINTS, 0, allPos.size() / 9);
+
     }
 
  }

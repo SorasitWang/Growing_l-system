@@ -7,7 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "model.h"
+#include "../model.h"
 #include "../util.h"
 #include <time.h>
 using namespace std;
@@ -17,10 +17,10 @@ class BaseObject
 public:
 	BaseObject* parent;
 	BaseObject* prev;
-	glm::vec3 startPos,direction,endPos;
+	glm::vec3 startPos,direction,endPos,color;
 	glm::mat4 dirMatrix;
 	bool isBuld;
-	string type,dirText;
+	string dirText;
 	int level;
 	bool isCore,alreadyAdded;
 	vector<BaseObject*> childBuld;
@@ -29,7 +29,7 @@ public:
 	Model* model;
 
 	BaseObject() {};
-	BaseObject(BaseObject* parent, BaseObject* prev, string dirText,string type,float alpha,float delta) {
+	BaseObject(BaseObject* parent, BaseObject* prev, string dirText,glm::vec3 color,float alpha,float delta) {
 
 		this->parent = parent;
 		this->prev = prev;
@@ -48,7 +48,7 @@ public:
 		this->normRand = (float)rand() / RAND_MAX;
 		this->level = this->parent == nullptr ? normRand*3 : this->parent->level + normRand*3;
 		//this->endPos = this->startPos + direction;
-		this->type = type;
+		this->color = color;
 		this->alreadyAdded = false;
 		this->size =  1.0f + normRand*3;
 		//this->model = new Model("./res/cylinder_8v.obj");
@@ -179,16 +179,11 @@ public:
 		allPos.push_back(this->endPos.x);
 		allPos.push_back(this->endPos.y);
 		allPos.push_back(this->endPos.z);
-
-		if (this->type == "bark") {
-			allPos.push_back(0.9f + this->normRand /5);
-			allPos.push_back(0.0f);
-			allPos.push_back(0.0f);
-		}
-		else   if (this->type == "topBark") {
-			allPos.push_back(0.0f);
-			allPos.push_back(0.9f + this->normRand /5);
-			allPos.push_back(0.0f);
+		for (unsigned int c = 0; c < 3; c++) {
+			if (this->color[c] != 0.0f)
+				allPos.push_back(0.9f + this->normRand / 5);
+			else
+				allPos.push_back(0.0f);
 		}
 		glm::mat4 mat(1.0f);
 		

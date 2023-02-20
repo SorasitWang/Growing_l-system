@@ -22,34 +22,25 @@
     <Filter Include="Header Files\tree">
       <UniqueIdentifier>{82ec0c80-2181-4b1c-a83c-7f0a48234348}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\buld">
-      <UniqueIdentifier>{bed01699-aaea-402f-aaf0-e520e75fd935}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\limb">
-      <UniqueIdentifier>{f5329fc5-3689-4acc-a041-ca874662ec1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\newLSystem">
-      <UniqueIdentifier>{259d2c83-64d6-4b87-815e-65feea44df21}</UniqueIdentifier>
+    <Filter Include="Source Files\shader">
+      <UniqueIdentifier>{116c0a96-54a1-47c8-80fc-25dd3aaeae4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="header\lSystem.cpp">
+    <ClCompile Include="src\Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="header\lSystem\lSystem.cpp">
       <Filter>Header Files\lSystem</Filter>
     </ClCompile>
-    <ClCompile Include="header\object.cpp">
-      <Filter>Header Files\object</Filter>
-    </ClCompile>
-    <ClCompile Include="tree.cpp">
+    <ClCompile Include="header\tree\tree.cpp">
       <Filter>Header Files\tree</Filter>
     </ClCompile>
-    <ClCompile Include="util.h">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="header\lSystem\newLSystem.cpp">
+      <Filter>Header Files\lSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,61 +56,64 @@
     <ClInclude Include="header\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\lSystem.h">
-      <Filter>Header Files\lSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="header\object.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="header\tree.h">
-      <Filter>Header Files\tree</Filter>
-    </ClInclude>
     <ClInclude Include="header\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\buld.h">
-      <Filter>Header Files\buld</Filter>
+    <ClInclude Include="header\lSystem\baseLSystem.h">
+      <Filter>Header Files\lSystem</Filter>
     </ClInclude>
-    <ClInclude Include="header\limb.h">
-      <Filter>Header Files\limb</Filter>
+    <ClInclude Include="header\lSystem\lSystem.h">
+      <Filter>Header Files\lSystem</Filter>
     </ClInclude>
-    <ClInclude Include="header\baseObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="header\lSystem\newLSystem.h">
+      <Filter>Header Files\lSystem</Filter>
     </ClInclude>
-    <ClInclude Include="header\newLSystem.h">
-      <Filter>Header Files\newLSystem</Filter>
+    <ClInclude Include="header\object\baseObject.h">
+      <Filter>Header Files\object</Filter>
     </ClInclude>
-    <ClInclude Include="header\baseLSystem.h">
+    <ClInclude Include="header\object\buld.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="header\object\limb.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="header\object\object.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="header\tree\tree.h">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="header\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="line.vs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\line.fs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="line.fs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\line.gs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="line.gs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\line.vs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="model_instance.vs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\model.fs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="model_instance.fs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\model.vs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="model.vs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\model_instance.fs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="model.fs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\model_instance.vs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="text.vs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\text.fs">
+      <Filter>Source Files\shader</Filter>
     </None>
-    <None Include="text.fs">
-      <Filter>Source Files</Filter>
+    <None Include="src\shader\text.vs">
+      <Filter>Source Files\shader</Filter>
     </None>
   </ItemGroup>
 </Project>

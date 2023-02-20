@@ -1,5 +1,5 @@
-#ifndef NEWLSYSTEM_H
-#define NEWLSYSTEM_H
+#ifndef BASELSYSTEM_H
+#define BASELSYSTEM_H
 
 
 #include <iostream>
@@ -11,24 +11,22 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
 #include <ctype.h>
-#include "object.h"
-#include "limb.h"
-#include "buld.h"
-#include "baseObject.h"
+#include <string>
 using namespace std;
-typedef std::pair < glm::vec3, glm::vec3 > pairVec3;
-class NewLSystem
+
+class  BaseLSystem
 {
 public:
     string axiom;
-    map<string, string> rules,types;
+    map<string, string> rules;
 
-    NewLSystem() {};
-    NewLSystem(string axiom, map<string, string> rules, map<string, string> types ) {
+    BaseLSystem() {};
+    ~BaseLSystem() {};
+    BaseLSystem(string axiom, map<string, string> rules) {
         this->axiom = axiom;
         this->rules = rules;
-        this->types= types;
     };
+  
 
     static vector<string> extract(string state) {
         /*
@@ -44,15 +42,10 @@ public:
             int end = state.find(")", start);
             start += 1;
             re.push_back(state.substr(start, end - start));
-
-            //print(start, end, state[start + 1:end])
         }
         return re;
 
     }
-
-
-    void step();
 
     static void genRule(map<string, string> _initRules, int num, map<string, string>& rules) {
 
@@ -82,21 +75,9 @@ public:
             }
             initRules = newInitRules;
         }
-        //return rules;
 
     }
-
-    vector<Limb*> genPos(float alpha, float delta, glm::vec3 initDirection, map<char, string> colors);
-    Buld genHierachy(int step, string state);
-    BaseObject* genHierachy1(int step);
-    BaseObject* genObjects(float alpha_, float delta, glm::vec3 initDirection, map<char, string> colors);
-    void recurGenHierachy(BaseObject* parent, int it);
-
-
-    BaseObject* genHierachy2();
-    void recurGenHierachy2(BaseObject* parent, string txt, int it, float alpha_, float delta, map<char, string> colors, map<string, string> rules);
-
 private:
 
 };
-#endif // !LSYSTEM_H
+#endif //BASELSYSTEM_H

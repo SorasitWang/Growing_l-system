@@ -7,7 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "model.h"
+#include "../model.h"
 using namespace std;
 class Object
 {

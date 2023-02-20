@@ -143,37 +143,37 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
-    <ClCompile Include="header\lSystem.cpp" />
-    <ClCompile Include="header\object.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="tree.cpp" />
-    <ClCompile Include="util.h" />
+    <ClCompile Include="header\lSystem\lSystem.cpp" />
+    <ClCompile Include="header\lSystem\newLSystem.cpp" />
+    <ClCompile Include="header\tree\tree.cpp" />
+    <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\baseLSystem.h" />
-    <ClInclude Include="header\baseObject.h" />
-    <ClInclude Include="header\buld.h" />
     <ClInclude Include="header\camera.h" />
-    <ClInclude Include="header\limb.h" />
-    <ClInclude Include="header\lSystem.h" />
+    <ClInclude Include="header\lSystem\baseLSystem.h" />
+    <ClInclude Include="header\lSystem\lSystem.h" />
+    <ClInclude Include="header\lSystem\newLSystem.h" />
     <ClInclude Include="header\mesh.h" />
     <ClInclude Include="header\model.h" />
-    <ClInclude Include="header\newLSystem.h" />
-    <ClInclude Include="header\object.h" />
+    <ClInclude Include="header\object\baseObject.h" />
+    <ClInclude Include="header\object\buld.h" />
+    <ClInclude Include="header\object\limb.h" />
+    <ClInclude Include="header\object\object.h" />
     <ClInclude Include="header\shader.h" />
     <ClInclude Include="header\stb_image.h" />
-    <ClInclude Include="header\tree.h" />
+    <ClInclude Include="header\tree\tree.h" />
+    <ClInclude Include="header\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="line.fs" />
-    <None Include="line.gs" />
-    <None Include="line.vs" />
-    <None Include="model.fs" />
-    <None Include="model.vs" />
-    <None Include="model_instance.fs" />
-    <None Include="model_instance.vs" />
-    <None Include="text.fs" />
-    <None Include="text.vs" />
+    <None Include="src\shader\line.fs" />
+    <None Include="src\shader\line.gs" />
+    <None Include="src\shader\line.vs" />
+    <None Include="src\shader\model.fs" />
+    <None Include="src\shader\model.vs" />
+    <None Include="src\shader\model_instance.fs" />
+    <None Include="src\shader\model_instance.vs" />
+    <None Include="src\shader\text.fs" />
+    <None Include="src\shader\text.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

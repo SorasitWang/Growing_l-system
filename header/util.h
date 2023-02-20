@@ -15,13 +15,16 @@ using namespace std;
 class Util {
 public:
 	
-	static string printVec3(glm::vec3 in) {
-		string interval = " ";
+	static string printVec3(glm::vec3 in,string interval=" ") {
 		return to_string(in.x) + interval + to_string(in.y) + interval + to_string(in.z);
 	}
 
+    static string printVec4(glm::vec4 in, string interval = " ") {
+        return to_string(in.x) + interval + to_string(in.y) + interval + to_string(in.z) + interval + to_string(in.w);
+    }
+
 	static float randomInRange(float min,float max) {
-		cout << (float)rand() << endl;
+		//cout << (float)rand() << endl;
 		float random = (float)rand() / RAND_MAX;
 		return min + random ;
 	}
@@ -34,7 +37,7 @@ public:
         destVec = glm::normalize(destVec);
         glm::vec3 originVec(0, 1, 0);
         glm::vec3 crossVec = glm::cross(originVec, destVec);
-        cout << "=>" <<printVec3(originVec) << " " << printVec3(destVec) << " " << printVec3(crossVec) << endl;
+        //cout << "=>" <<printVec3(originVec) << " " << printVec3(destVec) << " " << printVec3(crossVec) << endl;
         float normCross = crossVec.length();
         glm::vec3 axis = glm::normalize(crossVec);
         float angle = glm::degrees(glm::asin(normCross));

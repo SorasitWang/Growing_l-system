@@ -7,19 +7,21 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "lSystem.h"
-
+#include "../lSystem/lSystem.h"
+#include "../lSystem/newLSystem.h"
 using namespace std;
 class Tree 
 {
 public :
     LSystem lSystem;
+    NewLSystem newLSystem;
 
     Tree() {};
     Tree(string type, unsigned int step,float alpha=17.5f,float delta=8.0f,glm::vec3 initDirection= glm::vec3(.0f, 1.0f, .0f)) {
         this->step = step;
         this->type = type;
         this->lSystem = Tree::genSystemForType(this->type,this->step,this->colors);
+        this->newLSystem = Tree::genNewSystemForType(this->type);
         this->alpha = alpha;
         this->delta = delta;
         this->initDirection = initDirection;
@@ -28,15 +30,6 @@ public :
     void runAll() {
         for (unsigned int i = 0; i < this->step; i++) {
             this->lSystem.step();
-            /* allPos = plotA3d(
-                 system.state,
-                 step,
-                 17.5,
-                 8,
-                 np.array([0, 0, 1.0]),
-                 { "g": "g", "b" : "#654321" },
-                 gen = False,
-                 )*/
         }
     }
     
@@ -47,9 +40,12 @@ public :
     vector<Limb*> draw() {
         return this->lSystem.genPos(this->alpha,this->delta,this->initDirection,this->colors);
     }
+    BaseObject* drawNew() {
+        return this->newLSystem.genHierachy2(this->step,this->alpha,this->delta);
+    }
 
     static LSystem genSystemForType(string type, int step, map<char, string>& colors) ;
-    
+    static NewLSystem genNewSystemForType(string type);
 private :
     
     unsigned int step;

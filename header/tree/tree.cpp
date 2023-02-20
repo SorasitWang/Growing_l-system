@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "header/tree.h"
+#include "tree.h"
 
 LSystem Tree::genSystemForType(string type,int step,map<char,string>& colors) {
     map<string, string>rules;
@@ -37,29 +37,36 @@ LSystem Tree::genSystemForType(string type,int step,map<char,string>& colors) {
     else if (type == "C") {
         axiom = "(1X)";
         rules = {
-          //{"1X", "..+1(a)F[[(1X)F](a)F][[+&>(1X)F]+&>(a)F][[<-^(1X)F]<-^(a)F]"},
-         //{"X", "..+(a)F[[(X)F](a)F]"},
-          //{"1X", "..+(a)F[[++(1X)F]++(a)F][[--(1X)F]--(a)F][[&&(1X)F]&&(a)F][[^^(1X)F]^^(a)F]"},
-             {"1X", "..+(a)F[[++(1X)F]++(a)F]"},
+          {"1X", "..+(a)F[[++(1X)F]++(a)F][[--(1X)F]--(a)F][[&&(1X)F]&&(a)F][[^^(1X)F]^^(a)F]"},
+             //{"1X", "..+(a)F[[++(1X)F]++(a)F]"},
             {"a","a"}
         };
-
-     /*   LSystem::genRule(
-            {
-                {"1X", "1(b)F[&+(2b)](2b)"},
-                {"1b" , "1(b)[&+(2X)](2b)FF[&-(2X)][^(2X)]F"},
-            },
-            step,
-            rules
-            );*/
         colors = { {'a', "b"} };
     }
-    for (auto pair : rules)
-	    cout << pair.first << " : " <<pair.second << endl;
+   
     LSystem lSystem = LSystem::LSystem(
         axiom,
         rules,
         true
     );
     return lSystem;
+}
+
+
+NewLSystem Tree::genNewSystemForType(string type){
+    string axiom;
+    map<string, string> rules;
+    map<string, glm::vec3> colors;
+    if (type == "C") {
+        axiom = "X";
+        rules = {
+         {"X", "..+aF[[++XF]++bF][[--XF]--bF][[>XF]>bF][[<XF]<bF]"},
+             {"b","a"}
+        };
+        colors = {
+            {"a", glm::vec3(1,0,0) },
+            {"b", glm::vec3(0,1,0)}
+        };
+    }
+    return NewLSystem(axiom,rules,colors);
 }
