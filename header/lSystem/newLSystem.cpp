@@ -16,7 +16,6 @@ void NewLSystem::recurGenHierachy2(BaseObject* parent, string txt, int it, float
     vector<BaseObject*> prevStack;
     prevStack.push_back(nullptr);
     int bracketStack = 0;
-    auto tmp = rules.find("X");
     /* if (tmp != rules.end())
          cout << tmp->second << endl;*/
     for (char x_ : txt) {

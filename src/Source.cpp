@@ -48,21 +48,17 @@ Camera camera(glm::vec3(10.0f, .0f, 0.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
-bool spacePressed = false;
 Model* model;
 // timing
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
+float deltaTime = 0.0f,lastFrame = 0.0f;
 std::map<GLchar, Character> Characters;
 float step = 0;
 BaseObject* parent;
 vector<float> allPos;
-vector<float> currentPos;
 float scale = 1.0f;
 vector<Limb*> allObj;
-unsigned int VBO, VAO;
-int maxStep = 7;
-Tree tree("C", maxStep,15.0f,1.0f);
+unsigned int VBO, VAO, maxStep = 7;
+Tree tree("B", maxStep,15.0f,1.0f);
 Shader* instanceShader;
 Shader* modelShader;
 Shader* lineShader;
@@ -218,10 +214,9 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    //parent = tree.lSystem.genHierachy1(4);
+    //tree.draw();
     //parent = tree.drawNew();
-    //parent = tree.draw();
-    //return 0;
+   
     while (!glfwWindowShouldClose(window))
     {
         srand(time(NULL));
@@ -243,8 +238,8 @@ int main() {
 
         step += deltaTime;
         allPos.clear();
-        genPos2(allPos);
-        //genPos1(allPos);
+        //genPos2(allPos);
+        genPos1(allPos);
         processInput(window); 
         textShader.use();
         renderText(textShader, "#line " + std::to_string(allPos.size()/9), 15.0f, 15.0f, 0.4f, glm::vec3(1, 1, 1));
@@ -275,17 +270,7 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 
-        if (!spacePressed) {
-          
-            spacePressed = true;
-            //genPos1(allPos);
-            //genPos2(allPos);
-        }
-    }
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
-        spacePressed = false;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -394,6 +379,7 @@ void genPos2(vector<float>& allPos) {
     //cout << "step" << step << endl;
     vector<glm::mat4> allMatrix;
     vector<glm::vec3> colorInstances;
+
     parent->parse(allPos,step,allMatrix);
     //cout << allPos.size()/9 << endl;
    /* for (int i = 0; i < allPos.size() ; i+=9) {

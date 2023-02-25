@@ -68,5 +68,14 @@ NewLSystem Tree::genNewSystemForType(string type){
             {"b", glm::vec3(0,1,0)}
         };
     }
+    else if (type == "B") {
+        axiom = "X";
+        rules = {
+                {"X", "..+aXF[+XF][-XF]<bFF[&XF][^XF]&bF"},
+        };
+        colors = {
+            {"a",  glm::vec3(1,0,0)}
+        };
+    }
     return NewLSystem(axiom,rules,colors);
 }
